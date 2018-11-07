@@ -1,0 +1,78 @@
+.TH RBD-INTEGRITY "1"
+.SH NAME
+rbd-integrity \- Manual page for rbd-integrity
+.SH SYNOPSIS
+rbd-integrity [OPTION]...
+.SH DESCRIPTION
+Write and optionally verify block data to a Ceph RBD volume.
+The I/O engine specifically tests for write order correctness by overwriting
+the same block, asynchronously, many times with verifiable contents.  This
+test mode is useful for detecting OSD write operations which are executed in
+an order which differs from the application's write order.  More specifically,
+this program is developed for testing the correctness of RBD volume contents
+when Ceph RPC priorities are dynamically adjusted.
+
+rbd-sanity writes are issued by a single thread which adjusts its asynchronous
+I/O depth randomly throughout the test.  The purpose of random I/O depths is to
+create varying sized I/O pipelines which will cause RPC priorities to be
+frequently adjusted.
+
+rbd-sanity uses mmap() to store its output.  The output file contains a single
+value per block which holds the version number of the last write.  In verify
+mode, this file is used to test the correctness of the RBD volume's block data.
+
+.SH OPTIONS
+.TP
+\fB -b\fR \fISIZE\fR
+Block size  (default: \fB4096\fR)
+.TP
+\fB -c\fR \fICONFIG-FILE\fR
+Config file path  (default: \fB/etc/ceph/ceph.conf\fR)
+.TP
+\fB -D\fR \fILEVEL\fR
+Debugging level  [0 -> 4 (most verbose)]
+.TP
+\fB -d\fR \fIDEPTH\fR
+I/O depth - Controls the number of asynchronous writes that will be simultaneously issued to the same RBD block.  (default: \fB32\fR, max: 512)
+.TP
+\fB -f\fR \fIFILE-NAME\fR
+Use a regular file with asynchronous I/O instead of RBD
+.TP
+\fB -i\fR \fIRBD-IMAGE-NAME\fR
+RBD block volume name  (default: \fBqos-rbd-tester\fR)
+.TP
+\fB -h\fR
+Print help message
+.TP
+\fB -m\fR \fIMULTI-BLOCK-MODE\fR (default: \fB0\fR)\fR
+Program will issue multi-block writes of random size between 1 and the value specified here.
+.TP
+\fB -n\fR \fICLIENT-NAME\fR
+Ceph RBD client name  (default: \fBadmin\fR)
+.TP
+\fB -N\fR \fINUM-BLOCK-OVERWRITES\fR
+Number of block overwrites  (default: \fB11\fR)
+.TP
+\fB -o\fR \fIOUTPUT-FILE\fR
+Output file name  (default: \fBqos-rbd-tester.out\fR)
+.TP
+\fB -p\fR \fIRADOS-POOL-NAME\fR
+Ceph RADOS pool name  (default: \fBrbd\fR)
+.TP
+\fB -R\fR
+Enable concurrent read thread (default: \fBfalse\fR)
+.TP
+\fB -s\fR \fIRUN-TIME-SECS\fR
+Number of seconds test will run  (default: \fB30\fR)
+.TP
+\fB -V\fR
+Run program in verify mode.  When specified, the program will open the output file and compare the RBD block contents with the data stored in the output file.
+.TP
+\fB -v\fR
+Display the version number of the program and exit.
+.TP
+\fB -z\fR \fIFILE-SIZE\fR
+Specify the file size when using \fB -f\fR (default: \fB1GiB\fR)
+
+.SH AUTHOR
+Paul Nowoczynski (pnowoczynski@digitalocean.com)

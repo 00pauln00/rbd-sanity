@@ -1,0 +1,115 @@
+
+rbd-sanity.c,4320
+#define _GNU_SOURCE 7,138
+#define NBBY 25,498
+#define MIN(28,521
+#define MAX(29,563
+#define OPTS 31,606
+#define DEF_OUTPUT_FILE 33,653
+#define CONF_DEFAULT 34,707
+#define RBD_IMAGE_DEFAULT 35,762
+#define CLIENT_NAME_DEFAULT 36,812
+#define POOL_DEFAULT 37,853
+#define MAX_IODEPTH 38,892
+#define DEF_IODEPTH 39,929
+#define MAX_OVERWRITES 40,965
+#define DEF_OVERWRITES 41,1002
+#define DEF_RUNTIME_SECS 42,1038
+#define DEF_BLOCK_SIZE 43,1074
+#define MAX_BLOCK_SIZE 44,1112
+#define ENABLE_CONCURRENT_READS 45,1156
+#define DEF_MULTI_BLOCK_IO 46,1191
+#define DEF_FILE_IO_SIZE 47,1226
+#define VERSION_MAJOR 49,1271
+#define VERSION_MINOR 50,1306
+#define QRT_FORCE_IODEPTH_OF_ONE 55,1512
+enum log_levels57,1548
+    LL_FATAL 59,1566
+    LL_ERROR 60,1584
+    LL_WARN 61,1602
+    LL_DEBUG 62,1620
+    LL_TRACE 63,1638
+    LL_MAX64,1656
+ll_to_string(68,1691
+#define log_msg(88,2012
+#define NUM_READ_THREADS 100,2755
+#define MAX_READ_THREAD_SLEEP_PERCENTAGE_RUNTIME 101,2806
+#define MAX_READ_THREAD_SLEEP_SECS 102,2858
+static const unsigned long long qrtBlockMagicWord 105,2924
+static const unsigned long long qrtBlockMagicWord 107,2987
+static char                    *qrtExecName;qrtExecName109,3066
+static enum log_levels          qrtLogLevel 110,3111
+static int                      qrtRuntime 111,3172
+static bool                     qrtVerifyMode 112,3242
+static bool                     qrtEnableReadThr 113,3301
+static pthread_t                qrtReadThreads[qrtReadThreads114,3378
+#define RANDOM_STATE_BUF_LEN 116,3445
+static __thread unsigned long long **qrtBufs;qrtBufs117,3477
+static __thread bool                 qrtRandInit;118,3523
+static __thread struct random_data   qrtRandomData;119,3573
+static __thread char                 qrtRandomStateBuf[qrtRandomStateBuf120,3625
+static __thread io_context_t         qrtAioCtx;121,3703
+struct my_rbd_info123,3752
+    rados_t          rbdi_cluster;125,3773
+    rados_ioctx_t    rbdi_io_ctx;126,3808
+    rbd_image_t      rbdi_image;127,3842
+    rbd_image_info_t rbdi_stat;128,3875
+struct my_file_info131,3911
+    const char *fi_output_file_name;fi_output_file_name133,3933
+    int         fi_fd;134,3970
+    off_t       fi_size;135,3993
+typedef unsigned short output_val_t;138,4022
+#define MAX_OVERWRITES_TOLERATED 140,4060
+struct output_info144,4239
+    output_val_t last_write_val;146,4260
+struct qrt_config149,4321
+    bool                 qrtc_file_io;151,4341
+        struct my_rbd_info  qrtc_rbd_info;153,4392
+        struct my_file_info qrtc_fi_info;154,4435
+    struct output_info  *qrtc_output;qrtc_output156,4484
+    int                  qrtc_output_fd;157,4522
+    int                  qrtc_num_overwrites;158,4563
+    char                *qrtc_pool_name;qrtc_pool_name159,4609
+    char                *qrtc_image_name;qrtc_image_name160,4650
+    char                *qrtc_client_name;qrtc_client_name161,4692
+    char                *qrtc_conf_file;qrtc_conf_file162,4735
+    char                *qrtc_output_file;qrtc_output_file163,4776
+    size_t               qrtc_block_size;164,4819
+    size_t               qrtc_io_depth;165,4861
+    size_t               qrtc_multi_block;166,4901
+qrt_config_init(170,4960
+qrtc_get_rbd_info(188,5615
+qrt_print_help(194,5737
+qrt_print_version(224,7028
+qrt_getopts(232,7172
+qrt_get_random(302,8954
+qrt_assert_output_value_bounds(321,9405
+qrt_config_check(330,9763
+qrtc_config_words_per_block(344,10236
+qrtc_get_num_outputs(350,10394
+qrtc_get_output_size(359,10664
+qrtc_open_and_mmap_output_file(365,10810
+qrt_rbd_disconnect(406,11812
+qrtc_aio_init(419,12113
+qrtc_file_io_init(435,12442
+qrtc_rbd_init(468,13276
+qrtc_free_buffers(536,15097
+qrtc_alloc_buffers(548,15334
+qrt_src_block_init(572,15912
+qrtc_get_block_offset(589,16436
+qrt_sink_block_verify(595,16584
+qrt_block_rbd_aio(660,18748
+qrt_block_file_aio(762,22249
+qrt_block_aio(843,25100
+qrt_assert_output_pos(859,25695
+qrt_get_output_val(870,26056
+qrt_write_output_val(883,26411
+qrt_get_multi_block_cnt(900,26885
+qrt_verify_image(914,27241
+#define TIMED_LOOP(931,27695
+qrt_write_image(943,28266
+qrt_read_image_for_load_generation_only(988,29615
+qrt_launch_read_threads(1042,31081
+qrt_join_read_threads(1055,31455
+qrt_cleanup(1070,31814
+main(1117,32978
